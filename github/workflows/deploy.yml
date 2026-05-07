@@ -6,14 +6,14 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js for backend
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -36,12 +36,5 @@ jobs:
       - name: Build Docker containers
         run: docker compose build
 
-  deploy:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to AWS EC2
-        run: |
-          echo "Deployment step placeholder"
-          echo "In production, connect to EC2 using SSH and run docker compose up -d"
+      - name: CI/CD completed
+        run: echo "CloudDeployX pipeline completed successfully"

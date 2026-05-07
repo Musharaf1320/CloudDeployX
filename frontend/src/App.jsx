@@ -8,20 +8,32 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const fetchDeployments = async () => {
-    const res = await axios.get(`${API_URL}/deployments`);
-    setDeployments(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/deployments`);
+      setDeployments(res.data);
+    } catch (error) {
+      console.error("Error fetching deployments:", error);
+    }
   };
 
   const startDeployment = async () => {
     setLoading(true);
 
-    await axios.post(`${API_URL}/deployments`, {
-      appName: "CloudDeployX",
-      environment: "Production"
-    });
+    try {
+      await axios.post(`${API_URL}/deployments`, {
+        appName: "CloudDeployX",
+        environment: "Production",
+        branch: "main",
+        commitId: Math.random().toString(36).substring(2, 9),
+        version: "v1.0.0"
+      });
+
+      fetchDeployments();
+    } catch (error) {
+      console.error("Error starting deployment:", error);
+    }
 
     setLoading(false);
-    fetchDeployments();
   };
 
   useEffect(() => {
@@ -38,9 +50,10 @@ function App() {
     <div style={styles.page}>
       <div style={styles.container}>
         <h1>CloudDeployX</h1>
+
         <p style={styles.subtitle}>
-          Working DevOps Deployment Tracker using React, Node.js, Docker,
-          Nginx, and CI/CD concepts.
+          Working DevOps Deployment Tracker using React, Node.js, MongoDB,
+          Docker, Nginx, and CI/CD concepts.
         </p>
 
         <button style={styles.button} onClick={startDeployment}>
@@ -53,11 +66,48 @@ function App() {
           <p>No deployments yet. Click Start Deployment.</p>
         ) : (
           deployments.map((deployment) => (
-            <div key={deployment.id} style={styles.card}>
+            <div key={deployment._id || deployment.id} style={styles.card}>
               <h3>{deployment.appName}</h3>
-              <p><b>Environment:</b> {deployment.environment}</p>
-              <p><b>Status:</b> {deployment.status}</p>
-              <p><b>Started:</b> {deployment.createdAt}</p>
+
+              <p>
+                <b>Environment:</b> {deployment.environment}
+              </p>
+
+              <p>
+                <b>Status:</b> {deployment.status}
+              </p>
+
+              <p>
+                <b>Branch:</b> {deployment.branch || "main"}
+              </p>
+
+              <p>
+                <b>Commit ID:</b> {deployment.commitId || "N/A"}
+              </p>
+
+              <p>
+                <b>Version:</b> {deployment.version || "v1.0.0"}
+              </p>
+
+              <p>
+                <b>Started:</b>{" "}
+                {deployment.createdAt
+                  ? new Date(deployment.createdAt).toLocaleString()
+                  : "N/A"}
+              </p>
+
+              <div>
+                <b>Logs:</b>
+                <ul>
+                  {deployment.logs && deployment.logs.length > 0 ? (
+                    deployment.logs.map((log, index) => (
+                      <li key={index}>{log}</li>
+                    ))
+                  ) : (
+                    <li>No logs available</li>
+                  )}
+                </ul>
+              </div>
             </div>
           ))
         )}
@@ -74,7 +124,7 @@ const styles = {
     padding: "40px"
   },
   container: {
-    maxWidth: "800px",
+    maxWidth: "900px",
     margin: "auto",
     background: "white",
     padding: "40px",
@@ -87,6 +137,7 @@ const styles = {
   },
   button: {
     marginTop: "20px",
+    marginBottom: "20px",
     padding: "12px 20px",
     background: "#111827",
     color: "white",

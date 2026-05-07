@@ -1,6 +1,14 @@
 version: "3.8"
 
 services:
+  mongodb:
+    image: mongo:7
+    container_name: clouddeployx-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   backend:
     build: ./backend
     container_name: clouddeployx-backend
@@ -8,6 +16,9 @@ services:
       - "5000:5000"
     environment:
       - NODE_ENV=production
+      - MONGO_URI=mongodb://mongodb:27017/clouddeployx
+    depends_on:
+      - mongodb
 
   frontend:
     build: ./frontend
@@ -16,3 +27,6 @@ services:
       - "80:80"
     depends_on:
       - backend
+
+volumes:
+  mongo-data:
