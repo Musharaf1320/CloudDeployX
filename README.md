@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CloudDeployX – Dockerized CI/CD Deployment Pipeline
 
 CloudDeployX is a full-stack deployment project that demonstrates how to containerize a React and Node.js application using Docker, automate builds with GitHub Actions, and prepare the application for cloud deployment on AWS EC2.
@@ -36,3 +37,7 @@ Nginx Reverse Proxy
 Node.js Express Backend
  |
 API Response
+=======
+# CloudDeployX
+Built and customized a Dockerized full-stack deployment pipeline using React, Node.js, Docker, GitHub Actions, Nginx, and AWS EC2 concepts to automate application build and deployment workflows
+>>>>>>> e9755078aa752a9b0b8a88f09bbb126205f08151
