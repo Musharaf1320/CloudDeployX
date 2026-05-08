@@ -42,5 +42,5 @@ API Response
 Built and customized a Dockerized full-stack deployment pipeline using React, Node.js, Docker, GitHub Actions, Nginx, and AWS EC2 concepts to automate application build and deployment workflows
 >>>>>>> e9755078aa752a9b0b8a88f09bbb126205f08151
 
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/f9761680-152e-4882-a47e-4876b2ecc651" />
+
 
